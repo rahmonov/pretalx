@@ -30,8 +30,9 @@ DATA_DIR = config.get('filesystem', 'data', fallback=os.path.join(BASE_DIR, 'dat
 LOG_DIR = config.get('filesystem', 'logs', fallback=os.path.join(DATA_DIR, 'logs'))
 MEDIA_ROOT = config.get('filesystem', 'media', fallback=os.path.join(DATA_DIR, 'media'))
 STATIC_ROOT = config.get('filesystem', 'static', fallback=os.path.join(BASE_DIR, 'static.dist'))
+HTMLEXPORT_ROOT = config.get('filesystem', 'htmlexport', fallback=os.path.join(DATA_DIR, 'htmlexport'))
 
-for directory in (BASE_DIR, DATA_DIR, LOG_DIR, MEDIA_ROOT):
+for directory in (BASE_DIR, DATA_DIR, LOG_DIR, MEDIA_ROOT, HTMLEXPORT_ROOT):
     if not os.path.exists(directory):
         os.mkdir(directory)
 
@@ -50,6 +51,7 @@ EXTERNAL_APPS = [
     'djangoformsetjs',
     'jquery',
     'rules',
+    'bakery',
 ]
 LOCAL_APPS = [
     'pretalx.common.CommonConfig',
@@ -396,6 +398,10 @@ COMPRESS_CSS_FILTERS = (
 if DEBUG:
     MIDDLEWARE.append('whitenoise.middleware.WhiteNoiseMiddleware')
     STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+# django-bakery / HTML export
+BUILD_DIR = HTMLEXPORT_ROOT
+BAKERY_VIEWS = (
+)
 
 WSGI_APPLICATION = 'pretalx.wsgi.application'
 log_initial(DEBUG, config_files, db_name, db_backend, LOG_DIR)
