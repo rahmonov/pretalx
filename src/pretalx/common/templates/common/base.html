@@ -38,7 +38,7 @@
 <body>
 <div id="wrapper">
     <div id="top-bg" class="bg-primary">
-        {% if not request.event.is_public %}
+        {% if not request.event.is_public and not is_html_export %}
             <div class="event-nonpublic">
                 <span class="fa fa-user-secret"></span>
                 {% blocktrans trimmed %}
