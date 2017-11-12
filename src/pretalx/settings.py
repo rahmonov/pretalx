@@ -63,6 +63,7 @@ LOCAL_APPS = [
     'pretalx.agenda.AgendaConfig',
     'pretalx.cfp.CfPConfig',
     'pretalx.orga.OrgaConfig',
+    'pretalx.htmlexport.HtmlExportConfig',
 ]
 INSTALLED_APPS = DJANGO_APPS + EXTERNAL_APPS + LOCAL_APPS
 
@@ -401,6 +402,10 @@ if DEBUG:
 # django-bakery / HTML export
 BUILD_DIR = HTMLEXPORT_ROOT
 BAKERY_VIEWS = (
+    'pretalx.htmlexport.views.ExportScheduleView',
+    'pretalx.htmlexport.views.ExportScheduleVersionsView',
+    'pretalx.htmlexport.views.ExportTalkView',
+    'pretalx.htmlexport.views.ExportSpeakerView',
 )
 
 WSGI_APPLICATION = 'pretalx.wsgi.application'
