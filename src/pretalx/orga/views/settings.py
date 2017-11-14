@@ -344,16 +344,23 @@ class InvitationView(FormView):
     template_name = 'orga/invitation.html'
     form_class = UserForm
 
+    @property
+    def object(self):
+        return EventPermission.objects.filter(
+            invitation_token=self.kwargs.get('code'),
+            user__isnull=True
+        ).first()
+
     def get_context_data(self, *args, **kwargs):
         ctx = super().get_context_data(*args, **kwargs)
-        ctx['invitation'] = EventPermission.objects.get(
-            invitation_token=self.kwargs.get('code'),
-        )
+        ctx['invitation'] = self.object
         return ctx
 
     def form_valid(self, form):
         form.save()
-        permission = EventPermission.objects.get(invitation_token=self.kwargs.get('code'))
+        permission = self.object
+        if not permission:
+            return redirect(event.urls.base)
         user = User.objects.get(pk=form.cleaned_data.get('user_id'))
         perm = EventPermission.objects.filter(user=user, event=permission.event).exclude(pk=permission.pk).first()
         event = permission.event
