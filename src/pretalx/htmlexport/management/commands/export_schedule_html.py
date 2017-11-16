@@ -20,8 +20,6 @@ class Command(BakeryBuildCommand):
             raise CommandError('Could not find event with slug "{}"'.format(options['event']))
 
         settings.EXPORTING_EVENT = event
-
-        # TODO: use the default langauge for each event
-        translation.activate('en-gb')
+        translation.activate(event.locale)
 
         super().handle(*args, **options)
